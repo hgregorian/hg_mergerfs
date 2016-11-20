@@ -1,0 +1,6 @@
+name 'fake_mounts'
+maintainer 'Heig Gregorian'
+maintainer_email 'theheig@gmail.com'
+license 'all_rights'
+description 'Installs/Configures fake_mounts'
+version '0.1.0'

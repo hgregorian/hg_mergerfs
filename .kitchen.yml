@@ -1,0 +1,31 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+  client_rb:
+    default_attribute_whitelist: []
+    normal_attribute_whitelist: []
+
+platforms:
+  - name: centos-6.7
+    driver:
+      box: bento/centos-6.7
+  - name: centos-7.2
+    driver:
+      box: bento/centos-7.2
+
+suites:
+  - name: default
+    run_list:
+      - recipe[fake_mounts::default]
+      - recipe[hg_mergerfs::default]
+    attributes:
+      hg_mergerfs:
+        filesystems:
+          '/storage':
+            mount_points:
+              '/mnt/data-*'
+            options: ['defaults', 'moveonenospc=true', 'allow_other', 'minfreespace=10G', 'fsname=yugeData']
+            automount: true
