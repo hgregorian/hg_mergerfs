@@ -1,3 +1,6 @@
+# 0.2.0
+- define 'filesystems' attribute as array of hashes as opposed to hash of hashes
+
 # 0.1.0
 Initial release
 
