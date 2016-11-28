@@ -41,7 +41,7 @@ node['hg_mergerfs']['filesystems'].each do |entry|
     pass 0
     action :enable
   end
-  mount_action = (entry['automount'] && `mount | grep #{entry['filesystem']}` == '') ? :run : :nothing
+  mount_action = (entry['automount'] && ::File.readlines('/proc/mounts').grep(/\s+#{entry['filesystem']}\s+/).empty?) ? :run : :nothing
   execute "mount #{entry['filesystem']}" do
     command "mount #{entry['filesystem']}"
     action mount_action
