@@ -10,3 +10,5 @@ depends 'managed_directory', '~> 0.2.1'
 
 supports 'centos'
 supports 'redhat'
+source_url 'https://github.com/hgregorian/hg_mergerfs' if defined?(:source_url)
+issues_url 'https://github.com/hgregorian/hg_mergerfs/issues' if defined?(:issues_url)
