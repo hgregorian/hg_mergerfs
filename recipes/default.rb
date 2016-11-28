@@ -25,25 +25,25 @@ mergerfs_tools node['hg_mergerfs']['tools_version'] do
 end
 
 ## Define mergerfs pool(s) in /etc/fstab and mount (optional)
-node['hg_mergerfs']['filesystems'].each do |pool, values|
-  directory pool do
+node['hg_mergerfs']['filesystems'].each do |entry|
+  directory entry['filesystem'] do
     owner 'root'
     group 'root'
     mode '0755'
     recursive true
     action :create
   end
-  mount pool do
-    device values['mount_points']
+  mount entry['filesystem'] do
+    device entry['srcmounts'].join(':')
     fstype 'fuse.mergerfs'
-    options values['options']
+    options entry['options']
     dump 0
     pass 0
     action :enable
   end
-  mount_action = (values['automount'] && `mount | grep #{pool}` == '') ? :run : :nothing
-  execute "mount #{pool}" do
-    command "mount #{pool}"
+  mount_action = (entry['automount'] && ::File.readlines('/proc/mounts').grep(/\s+#{entry['filesystem']}\s+/).empty?) ? :run : :nothing
+  execute "mount #{entry['filesystem']}" do
+    command "mount #{entry['filesystem']}"
     action mount_action
   end
 end
