@@ -4,16 +4,8 @@ Cookbook for deploying [mergerfs] and associated [mergerfs-tools].
 
 ## Supported Platforms
 
-* CentOS 6/7
-
-## Attributes
-
-| Key | Type | Description | Default |
-| --- | ---- | ----------- | ------- |
-|`node['hg_mergerfs']['filesystems']`|Array|mergerfs filesystems to ensure are configured.|[] [see .kitchen.yml](.kitchen.yml)|
-|`node['hg_mergerfs']['package_version']`|String|Version of mergerfs package to install|'2.16.1'|
-|`node['hg_mergerfs']['tools_version']`|String|Commit hash for mergerfs-tools (use 'master' for latest)|'master'|
-|`node['hg_mergerfs']['tools_paths']`|String|Path where tools should be deployed|'/opt/mergerfs-tools/bin'|
+* CentOS/RHEL 6
+* CentOS/RHEL 7
 
 ## Usage
 
