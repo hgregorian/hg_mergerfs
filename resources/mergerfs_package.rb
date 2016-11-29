@@ -20,14 +20,11 @@ action :install do
     action :create
   end
 
-  ## Prerequisite for downgrading since Chef's implementatio of `yum localinstall` doesn't consider downgrades
-  yum_package 'downgrade mergerfs' do
+  ## Prerequisite for downgrading since Chef's implementation of `yum localinstall` will not perform downgrades
+  yum_package 'remove mergerfs' do
     package_name 'mergerfs'
     action :remove
-    only_if do
-      version_compare(node['packages'].fetch('mergerfs', {}).fetch('version', '0.0.0'), target_version)
-    end
-  end
+  end if version_compare(node['packages'].fetch('mergerfs', {}).fetch('version', '0.0.0'), target_version)
 
   yum_package 'mergerfs' do
     source "#{Chef::Config[:file_cache_path]}/#{package_name}"
@@ -36,9 +33,9 @@ end
 
 ## Retrieve tags for Github project
 def get_tags(url)
-  require 'rest-client'
+  require 'net/http'
   require 'json'
-  response = RestClient.get(url)
+  response = Net::HTTP.get(URI(url))
   json = JSON.parse(response)
   json.map { |x| x['ref'].split('/').last }
 end
