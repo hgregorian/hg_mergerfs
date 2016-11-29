@@ -7,13 +7,16 @@
 resource_name :mergerfs_tools
 default_action :install
 
-property :commit, String, name_property: true
+property :target, String, required: true, name_property: true
+property :commit, String, required: false, default: 'master'
 property :base_url, String, required: false, default: 'https://api.github.com/repos/trapexit/mergerfs-tools/contents/src'
-property :target, String, required: false, default: '/opt/mergerfs-tools/bin'
 property :tools, Array, required: false, default: []
-property :symlink, [TrueClass, FalseClass], required: false, default: true
+property :symlink, [TrueClass, FalseClass], required: false, default: false
+property :symlink_path, String, required: false, default: '/usr/local/sbin'
 
 action :install do
+  ## some tools require python3 which, at the time of this writing, is only available via EPEL
+  include_recipe 'yum-epel::default'
   package 'mergerfs_tools dependencies' do
     package_name %w(git python34)
   end
@@ -36,8 +39,8 @@ action :install do
       not_if { git_hash_object(tool_path) == attrs['sha'] }
     end
 
-    ## Provide symlink for tool in /usr/local/sbin/
-    link ::File.join('/usr/local/sbin', name) do
+    ## Provide symlink for tool in symlink path
+    link ::File.join(symlink_path, name) do
       to tool_path
     end if symlink
   end
@@ -53,7 +56,7 @@ action :install do
     end.compact
     entries_to_remove = directory_contents - managed_entries
     entries_to_remove.each do |e|
-      link_path = ::File.join('/usr/local/sbin', ::File.basename(e))
+      link_path = ::File.join(symlink_path, ::File.basename(e))
       link "Remove link #{link_path}" do
         target_file link_path
         action :delete

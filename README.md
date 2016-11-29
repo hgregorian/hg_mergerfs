@@ -34,26 +34,27 @@ end
 ```
 
 #### Properties
-**version**
+`version`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Package version to install
 
-**tags_url**
+`tags_url`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github API url for repository tags
 
-**release_url**
+`release_url`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github base URL for project releases
 
 ### mergerfs_tools
 ```ruby
 mergerfs_tools 'name' do
-  commit                     String # defaults to 'name' if not specified
+  target                     String # defaults to 'name' if not specified
+  commit                     String
   base_url                   String
-  target                     String
   tools                      Array
   symlink                    TrueClass, FalseClass
+  symlink_path               String
   notifies                   # see description
   subscribes                 # see description
   action                     Symbol # defaults to :install if not specified
@@ -61,25 +62,29 @@ end
 ```
 
 #### Properties
-**commit**
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commit hash to use when sync'ing tools.
-
-**base_url**
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github API url to tools directory for project.
-
-**target**
+`target`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Directory where tools will be sync'd to.
 
-**tools**
+`commit`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commit hash to use when sync'ing tools. (default: 'master')
+
+`base_url`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github API url to tools directory for project.
+
+`tools`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Array of desired tools to sync.
 
-**symlink**
+`symlink`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether or not to provide symlinks into `/usr/local/sbin`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether or not to provide symlinks (default: '/usr/local/sbin')
+
+`symlink_path`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify path where symlinks should be created
 
 
 ## License and Authors
