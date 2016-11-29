@@ -1,7 +1,0 @@
-name 'test_hg_mergerfs'
-maintainer 'Heig Gregorian'
-maintainer_email 'theheig@gmail.com'
-license 'all_rights'
-description 'Installs/Configures test_hg_mergerfs'
-version '0.1.0'
-depends 'hg_mergerfs'
