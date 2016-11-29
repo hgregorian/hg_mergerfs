@@ -28,6 +28,11 @@ action :install do
     recursive true
   end
 
+  ## Create symlink_path
+  directory symlink_path do
+    recursive true
+  end if symlink
+
   ## Retrieve metadata hash for tools info, filtered by wanted tools
   get_tools_hash(tools_url, tools).each do |name, attrs|
     tool_path = ::File.join(target, name)
