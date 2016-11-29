@@ -19,5 +19,5 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[test_hg_mergerfs::default]
+      - recipe[hg_mergerfs::test_resources]
     attributes:
