@@ -14,6 +14,10 @@ property :tools, Array, required: false, default: []
 property :symlink, [TrueClass, FalseClass], required: false, default: true
 
 action :install do
+  package 'mergerfs_tools dependencies' do
+    package_name %w(git python34)
+  end
+
   tools_url = "#{base_url}?ref=#{commit}"
 
   ## Create target
@@ -48,7 +52,6 @@ action :install do
       r.name.to_s if r.name.to_s.start_with?("#{new_resource.target}/")
     end.compact
     entries_to_remove = directory_contents - managed_entries
-    Chef::Log.warn(entries_to_remove.to_s)
     entries_to_remove.each do |e|
       link_path = ::File.join('/usr/local/sbin', ::File.basename(e))
       link "Remove link #{link_path}" do
@@ -61,11 +64,11 @@ end
 
 ## Method to retrieve information for given mergerfs tools
 def get_tools_hash(url, filter)
-  require 'rest-client'
+  require 'net/http'
   require 'json'
 
   tools_hash = {}
-  response = RestClient.get(url)
+  response = Net::HTTP.get(URI(url))
   json = JSON.parse(response)
 
   json.each do |x|

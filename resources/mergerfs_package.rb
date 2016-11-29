@@ -12,6 +12,8 @@ property :tags_url, String, required: false, default: 'https://api.github.com/re
 property :release_url, String, required: false, default: 'https://github.com/trapexit/mergerfs/releases/download/'
 
 action :install do
+  include_recipe 'yum-epel::default'
+
   target_version = (version.nil? || version.to_sym == :latest) ? get_tags(tags_url).last : version
 
   package_name = ::File.basename(source_url(release_url, target_version))
@@ -36,9 +38,9 @@ end
 
 ## Retrieve tags for Github project
 def get_tags(url)
-  require 'rest-client'
+  require 'net/http'
   require 'json'
-  response = RestClient.get(url)
+  response = Net::HTTP.get(URI(url))
   json = JSON.parse(response)
   json.map { |x| x['ref'].split('/').last }
 end

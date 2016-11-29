@@ -3,4 +3,4 @@ source 'https://supermarket.chef.io'
 
 metadata
 
-cookbook 'fake_mounts', path: 'test/cookbooks/fake_mounts'
+cookbook 'test_hg_mergerfs', path: 'test/cookbooks/test_hg_mergerfs'

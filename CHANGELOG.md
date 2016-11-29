@@ -1,3 +1,6 @@
+# 0.3.0
+- cookbook now provides only resources
+
 # 0.2.0
 - define 'filesystems' attribute as array of hashes as opposed to hash of hashes
 

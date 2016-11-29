@@ -19,12 +19,5 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[fake_mounts::default]
-      - recipe[hg_mergerfs::default]
+      - recipe[test_hg_mergerfs::default]
     attributes:
-      hg_mergerfs:
-        filesystems:
-          - filesystem: '/storage'
-            srcmounts: ['/mnt/data-*']
-            options: ['defaults', 'moveonenospc=true', 'allow_other', 'minfreespace=10G', 'fsname=yugeData']
-            automount: true
