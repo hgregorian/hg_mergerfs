@@ -1,3 +1,7 @@
+# 0.3.1
+- README updated
+- bug when specifying 'latest' for `mergerfs_package` version fixed
+
 # 0.3.0
 - cookbook now provides only resources
 
