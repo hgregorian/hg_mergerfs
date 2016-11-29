@@ -12,8 +12,6 @@ property :tags_url, String, required: false, default: 'https://api.github.com/re
 property :release_url, String, required: false, default: 'https://github.com/trapexit/mergerfs/releases/download/'
 
 action :install do
-  include_recipe 'yum-epel::default'
-
   target_version = (version.nil? || version.to_sym == :latest) ? get_tags(tags_url).last : version
 
   package_name = ::File.basename(source_url(release_url, target_version))
@@ -22,14 +20,11 @@ action :install do
     action :create
   end
 
-  ## Prerequisite for downgrading since Chef's implementatio of `yum localinstall` doesn't consider downgrades
-  yum_package 'downgrade mergerfs' do
+  ## Prerequisite for downgrading since Chef's implementation of `yum localinstall` will not perform downgrades
+  yum_package 'remove mergerfs' do
     package_name 'mergerfs'
     action :remove
-    only_if do
-      version_compare(node['packages'].fetch('mergerfs', {}).fetch('version', '0.0.0'), target_version)
-    end
-  end
+  end if version_compare(node['packages'].fetch('mergerfs', {}).fetch('version', '0.0.0'), target_version)
 
   yum_package 'mergerfs' do
     source "#{Chef::Config[:file_cache_path]}/#{package_name}"
