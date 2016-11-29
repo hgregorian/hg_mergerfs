@@ -4,7 +4,7 @@ maintainer_email 'theheig@gmail.com'
 license 'all_rights'
 description 'Installs/Configures hg_mergerfs'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.3.0'
+version '0.3.1'
 depends 'yum-epel'
 depends 'managed_directory', '~> 0.2.1'
 

@@ -1,6 +1,6 @@
 # hg_mergerfs cookbook
 
-Cookbook for deploying [mergerfs] and associated [mergerfs-tools].
+Cookbook for deploying [mergerfs], associated [mergerfs-tools], and instantiating mergerfs pools.
 
 ## Supported Platforms
 
@@ -9,16 +9,7 @@ Cookbook for deploying [mergerfs] and associated [mergerfs-tools].
 
 ## Usage
 
-### hg_mergerfs::default
-
-Include `hg_mergerfs`:
-
-```ruby
-include_recipe 'hg_mergerfs::default'
-```
-
-## Provided Resources
-This cookbook provides three custom resources; **mergerfs_package**, **mergerfs_tools**, and **mergerfs_pool**.
+This cookbook provides three resources; **mergerfs_package**, **mergerfs_tools**, and **mergerfs_pool**.
 
 ### mergerfs_package
 
@@ -36,15 +27,15 @@ end
 #### Properties
 `version`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Package version to install
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Package version to install.
 
 `tags_url`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github API url for repository tags
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github API url for repository tags. (default: 'https://api.github.com/repos/trapexit/mergerfs/git/refs/tags')
 
 `release_url`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github base URL for project releases
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github base URL for project releases. (default: 'https://github.com/trapexit/mergerfs/releases/download/')
 
 
 ### mergerfs_tools
@@ -69,23 +60,23 @@ end
 
 `commit`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commit hash to use when sync'ing tools. (default: 'master')
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commit hash to use when sync'ing tools. (default: `'master'`)
 
 `base_url`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github API url to tools directory for project.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github API url to tools directory for project. (default: 'https://api.github.com/repos/trapexit/mergerfs-tools/contents/src')
 
 `tools`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Array of desired tools to sync.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Array of desired tools to sync. (default: `[]` _all tools_)
 
 `symlink`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether or not to provide symlinks (default: '/usr/local/sbin')
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether or not to provide symlinks (default: `false`)
 
 `symlink_path`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify path where symlinks should be created
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify path where symlinks should be created (default: `'/usr/local/sbin'`)
 
 
 ### mergerfs_pool
@@ -108,15 +99,15 @@ end
 
 `srcmounts`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Array of srcmounts to be used in pool.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Array of srcmounts to be used in pool. (default: `[]`)
 
 `options`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mount options for pool.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mount options for pool. (default: `['defaults', 'allow_other']`)
 
 `automount`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether or not to ensure pool is mounted. (default: false)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether or not to ensure pool is mounted. (default: `false`)
 
 ## License and Authors
 

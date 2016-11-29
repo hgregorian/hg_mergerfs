@@ -12,7 +12,9 @@ property :tags_url, String, required: false, default: 'https://api.github.com/re
 property :release_url, String, required: false, default: 'https://github.com/trapexit/mergerfs/releases/download/'
 
 action :install do
-  target_version = (version.nil? || version.to_sym == :latest) ? get_tags(tags_url).last : version
+  ## If 'latest' has been specified, lookup tags to determine what the latest version is,
+  ## otherwise, use specified version.
+  target_version = version == 'latest' ? get_tags(tags_url).last : version
 
   package_name = ::File.basename(source_url(release_url, target_version))
   remote_file "#{Chef::Config[:file_cache_path]}/#{package_name}" do
@@ -48,7 +50,7 @@ def source_url(base_url, vers)
                  when 7
                    "mergerfs-#{vers}-1.el7.centos.x86_64.rpm"
                  end
-  ::File.join(base_url, version, package_name)
+  ::File.join(base_url, vers, package_name)
 end
 
 # Compares versions and returns the following:
