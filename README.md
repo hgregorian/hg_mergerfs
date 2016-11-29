@@ -18,7 +18,7 @@ include_recipe 'hg_mergerfs::default'
 ```
 
 ## Provided Resources
-This cookbook provides two custom resources; **mergerfs_package** and **mergerfs_tools**.  At the time of this writing, both resources are included in the default recipe, but this will likely change.
+This cookbook provides three custom resources; **mergerfs_package**, **mergerfs_tools**, and **mergerfs_pool**.
 
 ### mergerfs_package
 
@@ -45,6 +45,7 @@ end
 `release_url`
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Github base URL for project releases
+
 
 ### mergerfs_tools
 ```ruby
@@ -86,6 +87,36 @@ end
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Specify path where symlinks should be created
 
+
+### mergerfs_pool
+```ruby
+mergerfs_pool 'name' do
+  mount_point                String # defaults to 'name' if not specified
+  srcmounts                  Array
+  options                    Array
+  automount                  TrueClass, FalseClass
+  notifies                   # see description
+  subscribes                 # see description
+  action                     Symbol # defaults to :create if not specified
+end
+```
+
+#### Properties
+`mount_point`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Directory where pool will be mounted.
+
+`srcmounts`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Array of srcmounts to be used in pool.
+
+`options`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mount options for pool.
+
+`automount`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether or not to ensure pool is mounted. (default: false)
 
 ## License and Authors
 
