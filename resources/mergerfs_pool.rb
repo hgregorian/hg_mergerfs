@@ -7,7 +7,6 @@
 resource_name :mergerfs_pool
 default_action :create
 
-# other actions: :enable, :mount (should mimic Chef 'mount' resource if possible)
 property :mount_point, String, name_property: true
 property :srcmounts, Array, required: true
 property :options, Array, required: false, default: %w(defaults allow_other)
