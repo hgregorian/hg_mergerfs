@@ -21,21 +21,23 @@ action :install do
     package_name %w(git python34)
   end
 
-  tools_url = "#{base_url}?ref=#{commit}"
+  tools_url = "#{new_resource.base_url}?ref=#{new_resource.commit}"
 
   ## Create target
-  directory target do
+  directory new_resource.target do
     recursive true
   end
 
   ## Create symlink_path
-  directory symlink_path do
-    recursive true
-  end if symlink
+  if new_resource.symlink
+    directory new_resource.symlink_path do
+      recursive true
+    end
+  end
 
   ## Retrieve metadata hash for tools info, filtered by wanted tools
-  get_tools_hash(tools_url, tools).each do |name, attrs|
-    tool_path = ::File.join(target, name)
+  get_tools_hash(tools_url, new_resource.tools).each do |name, attrs|
+    tool_path = ::File.join(new_resource.target, name)
 
     ## Retrieve tool unless its git hash blob matches metadata
     remote_file tool_path do
@@ -45,23 +47,24 @@ action :install do
     end
 
     ## Provide symlink for tool in symlink path
-    link ::File.join(symlink_path, name) do
+    next unless new_resource.symlink
+    link ::File.join(new_resource.symlink_path, name) do
       to tool_path
-    end if symlink
+    end
   end
 
   ## Purge unmanaged files from target directory
-  managed_directory target
+  managed_directory new_resource.target
 
   ## Optionally purge associated symlink
-  if symlink
+  if new_resource.symlink
     directory_contents = ::Dir.glob("#{new_resource.target}/*")
     managed_entries = run_context.resource_collection.all_resources.map do |r|
       r.name.to_s if r.name.to_s.start_with?("#{new_resource.target}/")
     end.compact
     entries_to_remove = directory_contents - managed_entries
     entries_to_remove.each do |e|
-      link_path = ::File.join(symlink_path, ::File.basename(e))
+      link_path = ::File.join(new_resource.symlink_path, ::File.basename(e))
       link "Remove link #{link_path}" do
         target_file link_path
         action :delete

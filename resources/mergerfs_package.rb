@@ -14,19 +14,21 @@ property :release_url, String, required: false, default: 'https://github.com/tra
 action :install do
   ## If 'latest' has been specified, lookup tags to determine what the latest version is,
   ## otherwise, use specified version.
-  target_version = version == 'latest' ? get_tags(tags_url).last : version
+  target_version = new_resource.version == 'latest' ? get_tags(new_resource.tags_url).last : new_resource.version
 
-  package_name = ::File.basename(source_url(release_url, target_version))
+  package_name = ::File.basename(source_url(new_resource.release_url, target_version))
   remote_file "#{Chef::Config[:file_cache_path]}/#{package_name}" do
-    source source_url(release_url, target_version)
+    source source_url(new_resource.release_url, target_version)
     action :create
   end
 
   ## Prerequisite for downgrading since Chef's implementation of `yum localinstall` will not perform downgrades
-  yum_package 'remove mergerfs' do
-    package_name 'mergerfs'
-    action :remove
-  end if version_compare(node['packages'].fetch('mergerfs', {}).fetch('version', '0.0.0'), target_version)
+  if version_compare(node['packages'].fetch('mergerfs', {}).fetch('version', '0.0.0'), target_version)
+    yum_package 'remove mergerfs' do
+      package_name 'mergerfs'
+      action :remove
+    end
+  end
 
   yum_package 'mergerfs' do
     source "#{Chef::Config[:file_cache_path]}/#{package_name}"

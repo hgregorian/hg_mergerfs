@@ -25,9 +25,9 @@ action :create do
 
   ## Create fstab entry, but do not mount
   ## NOTE: mount resource doesn't handle mounting properly when wildcards are involved
-  mount "Create fstab entry for '#{mount_point}'" do
+  mount "Create fstab entry for '#{new_resource.mount_point}'" do
     mount_point new_resource.mount_point
-    device srcmounts.join(':')
+    device new_resource.srcmounts.join(':')
     fstype 'fuse.mergerfs'
     options new_resource.options
     dump 0
@@ -36,9 +36,9 @@ action :create do
   end
 
   ## Mount if 'automount' specified
-  execute "mount #{mount_point}" do
-    command "mount #{mount_point}"
-    action mounted?(mount_point) ? :nothing : :run
+  execute "mount #{new_resource.mount_point}" do
+    command "mount #{new_resource.mount_point}"
+    action mounted?(new_resource.mount_point) ? :nothing : :run
     only_if { new_resource.automount }
   end
 end
