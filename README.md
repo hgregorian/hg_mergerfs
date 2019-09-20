@@ -1,5 +1,9 @@
 # hg_mergerfs cookbook
 
+---
+# **I.C.E., SEE LICENSE 'ICE_LICENSE'**
+---
+
 Cookbook for deploying [mergerfs], associated [mergerfs-tools], and instantiating mergerfs pools.
 
 ## Supported Platforms
